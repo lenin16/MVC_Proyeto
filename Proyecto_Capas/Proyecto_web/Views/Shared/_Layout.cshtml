@@ -7,6 +7,10 @@
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+   
+    <link href="~/Sweetalert/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/DataTable/DataTables-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @RenderSection("styles", required: false)
 
 </head>
 <body>
@@ -31,12 +35,49 @@
             </div>*@
 
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+            @*<div class="navbar-nav">
                 <a class="nav-item nav-link active" href="~/Home/Index">Inicio <span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" href="~/Departamento/InicioDepartamento/">Departamento</a>
+                
                 <a class="nav-item nav-link" href="~/Proyecto/Inicio/">Proyecto</a>
                 <a class="nav-item nav-link" href="~/Home/Contact/">Contacto</a>
+            </div>*@
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="~/Home/Index">Inicio <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Departamento/InicioDepartamento/">Departamento</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Empleado/Inicio/">Empleados</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Proyecto
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @*<a class="dropdown-item" href="#">@Html.ActionLink("Proyecto_web","Inicio","Proyecto")</a>
+                            <a class="dropdown-item" href="#">@Html.ActionLink("Asignar_Proyecto", "Inicio", "Proyecto")</a>*@
+                            <a class="dropdown-item" href="#">Proyecto_web</a>
+                            <a class="dropdown-item" href="#">Asignar_Proyecto</a>
+                            
+                        </div>
+                    </li>
+
+                    @*<li class="nav-item">
+                        <a class="nav-link" href="~/Proyecto/Inicio/">Proyecto</a>
+                    </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="~/Home/Contact/" >Contacto</a>
+                    </li>
+                </ul>
             </div>
+
             <form class="form-inline my-2 my-lg-0">
                 @Html.Partial("_LoginPartial")
             </form>
@@ -54,6 +95,11 @@
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
+        <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+        <script src="~/DataTable/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>        
+        <script src="~/Sweetalert/sweetalert2.all.min.js"></script>
+        <script src="~/Scripts/Propias.js"></script>
         @RenderSection("scripts", required: false)
+
 </body>
 </html>

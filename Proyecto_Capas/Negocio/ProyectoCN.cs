@@ -21,5 +21,20 @@ namespace Negocio
             return obj.ListarProyecto();
         }
 
+        public static Proyecto obtenerProyecto(int id)
+        {
+            return obj.obtenerProyecto(id);
+        }
+
+        public static void Editar(Proyecto proyecto)
+        {
+            obj.Editar(proyecto);
+        }
+
+        public static void Eliminar(int id)
+        {
+            obj.Eliminar(id);
+        }
+
     }
 }

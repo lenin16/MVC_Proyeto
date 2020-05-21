@@ -5,12 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1b864126dc2b49b58f3d85d475ce91e8" Name="Diagram1">
-        <EntityTypeShape EntityType="BD_ProyectoModel.Departamento" Width="1.5" PointX="5" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BD_ProyectoModel.Empleado" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="BD_ProyectoModel.Proyecto" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <AssociationConnector Association="BD_ProyectoModel.FK_Empleado_Departamento" ManuallyRouted="false" />
-        <AssociationConnector Association="BD_ProyectoModel.FK_Empleado_Proyecto" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="BD_ProyectoModel.Departamento" Width="1.5" PointX="3.375" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_ProyectoModel.Proyecto" Width="1.5" PointX="9.875" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_ProyectoModel.Empleado" Width="1.5" PointX="5.75" PointY="0.625" />
+        <EntityTypeShape EntityType="BD_ProyectoModel.ProyectoEmpleado" Width="1.5" PointX="7.875" PointY="1" />
+        <AssociationConnector Association="BD_ProyectoModel.FK_Empleado_Departamento" />
+        <AssociationConnector Association="BD_ProyectoModel.FK_ProyectoEmpleado_Empleado" />
+        <AssociationConnector Association="BD_ProyectoModel.FK_ProyectoEmpleado_Proyecto" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

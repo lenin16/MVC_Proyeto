@@ -1,0 +1,53 @@
+﻿@model Entidad.Proyecto
+
+@{
+    ViewBag.Title = "Detalles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Proyecto</h4>
+    <hr />
+    <dl>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.IdProyecto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdProyecto)
+        </dd>*@
+
+        <dt>
+            Nombre del Proyecto
+        </dt>
+
+        <dd>
+            @Model.NombreProyecto
+        </dd>
+
+        <dt>
+            Fecha de Inicio
+        </dt>
+
+        <dd>
+            @Model.FechaInicio.ToShortDateString()
+        </dd>
+
+        <dt>
+            Fecha Fin
+        </dt>
+
+        <dd>
+            @Model.FechaFin.ToShortDateString()
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <a class="btn btn-primary" href="@Url.Action("Editar","Proyecto",new { id=Model.IdProyecto})">Editar</a>
+    @*@Html.ActionLink("Edit", "Editar", new { id = Model.IdProyecto }) |*@
+    @*@Html.ActionLink("Regresar", "Inicio")*@
+    <a class="btn btn-info" href="@Url.Action("Inicio","Proyecto")">Regresar</a> 
+</p>

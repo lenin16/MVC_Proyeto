@@ -1,0 +1,135 @@
+﻿@model Entidad.Proyecto
+
+@{
+    ViewBag.Title = "Editar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}  
+    
+  <form id="frmProyecto" action="@Url.Action("Editar","Proyecto")" method="post">
+        @Html.AntiForgeryToken()
+        <h4>Editar Proyecto</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IdProyecto)
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.IdProyecto, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IdProyecto, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IdProyecto, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group row">
+            @*<label class="col-md-2">Nombre del Proyecto</label>*@
+            <label for="NombreProyecto" class="col-sm-2 col-form-label col-form-label-sm">Nombre del Proyecto</label>
+            <div class="col-sm-10">
+                @*@Html.EditorFor(model => model.NombreProyecto, new { htmlAttributes = new { @class = "form-control" } })*@
+                <input type="text" class="form-control form-control-sm" id="NombreProyecto" name="NombreProyecto" value="@Model.NombreProyecto" placeholder="Nombre del Proyecto"/>
+                @Html.ValidationMessageFor(model => model.NombreProyecto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+           @* @Html.LabelFor(model => model.FechaInicio, htmlAttributes: new { @class = "col-sm-2 col-form-label col-form-label-sm" })*@
+            <label for="FechaInicio" class="col-sm-2 col-form-label col-form-label-sm">Fecha de Inicio</label>
+            <div class="col-sm-10">
+                <input type="date" class="form-control form-control-sm" id="FechaInicio" name="FechaInicio" value="@Model.FechaInicio.ToString("yyyy-MM-dd")"/>
+                @*@Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @*@Html.LabelFor(model => model.FechaFin, htmlAttributes: new { @class = "col-sm-2 col-form-label col-form-label-sm" })*@
+            <label for="FechaFin" class="col-sm-2 col-form-label col-form-label-sm">Fecha Fin</label>
+            <div class="col-sm-10">
+                <input type="date" class="form-control form-control-sm" id="FechaFin" name="FechaFin" value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
+                @*@Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <input type="submit" value="Guardar Proyecto" class="btn btn-primary btn-sm" />
+            </div>
+        </div>
+
+
+    </form>
+
+
+<div>
+    @Html.ActionLink("Regresar", "Inicio")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+        $("#frmProyecto").submit(function (event) {
+            event.preventDefault(); //para que no reinicialice
+
+            var nombre = $("#NombreProyecto").val();
+            var fechaInicio = $("#FechaInicio").val();
+            var FechaFin = $("#FechaFin").val();
+
+            if($.trim(nombre)=="")
+            {
+                alert("Debe ingresar el nombre del proyecto");
+                return;
+            }
+
+            if (fechaInicio == "" || FechaFin=="")
+            {
+                alert("Debe ingresar fecha de inicio o fecha fin");
+                return;
+            }
+
+            if (validarFechas(fechaInicio, FechaFin) == false) {
+                alert("la fecha fin no puede ser menor que la fecha inicio");
+                return;
+            }
+
+
+            var post_url = $(this).attr("action"); // obtener url
+            var request_method = $(this).attr("method"); // obtener el GET/POST del metodo
+            var form_data = $(this).serializeArray(); // se obtiene todos los elementos del forulario
+            console.log(form_data);
+            //return;
+            LoadingOverlayShow("#frmProyecto");
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+            }).done(function (response) {
+                console.log(response);
+                LoadingOverlayHide("#frmProyecto");
+                if (response.ok == true) {
+                    //alert("Proyecto editado correctamente");
+                    //window.location = response.toRedirect;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'mensaje',
+                        text: 'Proyecto editado correctamente',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.value) {
+                            window.location = response.toRedirect;
+                        }
+                    });
+                }
+                else {
+                    alert(response.msg);
+                }
+
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                LoadingOverlayHide("#frmProyecto");                
+            });
+        });
+
+
+</script>
+}

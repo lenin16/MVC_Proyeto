@@ -5,57 +5,58 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("Crear","Proyecto",FormMethod.Post)) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Crear nuevo Proyecto</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.IdProyecto, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IdProyecto, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IdProyecto, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+@*@using (Html.BeginForm("Crear", "Proyecto", FormMethod.Post, new { id = "frmProyecto" }))*@
 
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.NombreProyecto, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <label class="col-md-2">Nombre del Proyecto</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" id="NombreProyecto" name="NombreProyecto" placeholder="Ingrese Nombre del Proyecto"/>
-                @*@Html.EditorFor(model => model.NombreProyecto, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.ValidationMessageFor(model => model.NombreProyecto, "", new { @class = "text-danger" })
+    <form action="@Url.Action("Crear","Proyecto")" method="post" id="frmProyecto">
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Crear nuevo Proyecto</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.IdProyecto, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.IdProyecto, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.IdProyecto, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.NombreProyecto, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="col-md-2">Nombre del Proyecto</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="NombreProyecto" name="NombreProyecto" placeholder="Ingrese Nombre del Proyecto" />
+                    @*@Html.EditorFor(model => model.NombreProyecto, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.NombreProyecto, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2">Fecha de Inicio</label>
+                <div class="col-md-10">
+                    <input type="date" class="form-control" id="FechaInicio" name="FechaInicio" />
+                    @*@Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2">Fecha de Fin</label>
+                <div class="col-md-10">
+                    <input type="date" class="form-control" id="FechaFin" name="FechaFin" />
+                    @*@Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Crear Proyecto" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <label class="col-md-2">Fecha de Inicio</label>
-            <div class="col-md-10">
-                <input type="date" class="form-control" id="FechaInicio" name="FechaInicio" />
-                @*@Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2">Fecha de Fin</label>
-            <div class="col-md-10">
-                <input type="date" class="form-control" id="FechaFin" name="FechaFin" />
-                @*@Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Crear Proyecto" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
-}
+    </form>
 
 <div>
     @Html.ActionLink("Regresar", "Inicio")
@@ -63,4 +64,68 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $("#frmProyecto").submit(function (event) {
+            event.preventDefault(); //para que no reinicialice
+
+            var nombre = $("#NombreProyecto").val();
+            var fechaInicio = $("#FechaInicio").val();
+            var FechaFin = $("#FechaFin").val();
+
+            if($.trim(nombre)=="")
+            {
+                alert("Debe ingresar el nombre del proyecto");
+                return;
+            }
+
+            if (fechaInicio == "" || FechaFin=="")
+            {
+                alert("Debe ingresar fecha de inicio o fecha fin");
+                return;
+            }
+
+            if (validarFechas(fechaInicio, FechaFin) == false) {
+                alert("la fecha fin no puede ser menor que la fecha inicio");
+                return;
+            }
+            
+
+            var post_url = $(this).attr("action"); // obtener url
+            var request_method = $(this).attr("method"); // obtener el GET/POST del metodo
+            var form_data = $(this).serializeArray(); // se obtiene todos los elementos del forulario
+            console.log(form_data);
+            //return;
+            LoadingOverlayShow("#frmProyecto");
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+            }).done(function (response) {
+                console.log(response);
+                LoadingOverlayHide("#frmProyecto");
+                if (response.ok == true) {
+                    alert("Proyecto creado correctamente");
+                    window.location = response.toRedirect;
+                }
+                else {
+                    alert(response.msg);
+                }
+                
+                
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                LoadingOverlayHide("#frmProyecto");
+                // object jqXHR: es in objeto jqXHR que contiene todos los datos de la solicitud ajax realisado,
+                // incluyendo la propiedad jqXHR.status que contiene. entre otros posible, el codigo de estado HTTP de la respuesta
+                // string textStatus: texto que describe el tipo de error,que puede ser , ademas de null,
+                //   "abort" ,"timeout", "no transport" o "parseerror"
+                //string errorThrown: si hay un error HTTP, errorThrown contiene el texto de la cabezera HTTP de estado.
+                // por ejemplo, para un error HTTP 404, errorThrown es "not found",para un errot HTTP 500 es "internal server error"
+            });
+        });
+
+        
+
+        
+    </script>
 }

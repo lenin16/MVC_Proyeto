@@ -5,48 +5,124 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Inicio</h2>
+<h2>Lista de Proyectos</h2>
 
 <p>
-    @Html.ActionLink("Crear Nuevo", "Crear")
+    @*@Html.ActionLink("Crear Nuevo", "Crear",new { },new {@class="btn btn-primary" })*@
+    <a class="btn btn-primary" href="@Url.Action("Crear","Proyecto")">Crear Nuevo</a>
 </p>
-<table class="table">
-    <tr>
-        @*<th>
-            @Html.DisplayNameFor(model => model.IdProyecto)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.NombreProyecto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaInicio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaFin)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.IdProyecto)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.NombreProyecto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaInicio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaFin)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+<table class="table" id="tablaDemo">
+    <thead>
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.IdProyecto)
+            </th>*@
+            <th>
+                Nombre del Proyecto
+            </th>
+            <th>
+                Fecha de Inicio
+            </th>
+            <th>
+                Fecha Fin
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.IdProyecto)
+                </td>*@
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.NombreProyecto)*@
+                    @item.NombreProyecto
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.FechaInicio)*@
+                    @item.FechaInicio.ToShortDateString()
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.FechaFin)*@
+                    @item.FechaFin.ToShortDateString()
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" title="Editar" href="@Url.Action("Editar","Proyecto",new {id=item.IdProyecto })">Editar</a>  |
+                    <a class="btn btn-info btn-sm" title="Detalles" href="@Url.Action("Detalles","Proyecto",new {id=item.IdProyecto })">Detalles</a>  |
+                    <a class="btn btn-danger btn-sm" onclick="EliminarProyecto(@item.IdProyecto)" title="Eliminar" >Eliminar</a>
+                    @*@Html.ActionLink("Editar", "Edit", new {  id=item.IdProyecto }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdProyecto }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdProyecto })*@
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
+
+@section scripts{
+    
+
+    <script>
+        $("#tablaDemo").DataTable({
+            "pageLength": 5,
+            lengthMenu:[5,10,20,50,100,200],
+        });
+
+        function EliminarProyecto(id) {
+            Swal.fire({
+                title: 'estas seguro de eliminar este proyecto?',                
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar proyecto!'
+            }).then((result) => {
+                if (result.value) {                    
+                    //LoadingOverlayShow("#tablaDemo");
+                    $.ajax({
+                        url: "/Proyecto/Eliminar",
+                        type: "post",
+                        data: {id:id},
+                    }).done(function (response) {
+                        console.log(response);
+                        //LoadingOverlayHide("#tablaDemo");
+                        if (response.ok == true) {
+                            //alert("Proyecto creado correctamente");
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Proyecto eliminado correctamente',
+                                //showConfirmButton: false,
+                                //timer: 1700
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location = response.toRedirect;
+                                }
+                            });
+
+                            //window.location = response.toRedirect;
+                        }
+                        else {
+                            alert(response.msg);
+                        }               
+                
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        //LoadingOverlayHide("#tablaDemo");
+                        
+                    });
+
+                    //Swal.fire({
+                    //    icon: 'success',
+                    //    title: 'Proyecto eliminado correctamente',
+                    //    showConfirmButton: false,
+                    //    timer: 1700
+                    //})                
+                }
+            })
+        }
+        
+    </script>
+}

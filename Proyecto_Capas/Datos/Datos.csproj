@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DepartamentoDAL.cs" />
+    <Compile Include="EmpleadoDAL.cs" />
     <Compile Include="Model_Proyecto.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
