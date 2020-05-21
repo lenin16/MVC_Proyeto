@@ -52,6 +52,12 @@ namespace Proyecto_web.Controllers
             return View(dpto);
         }
 
+        public JsonResult GetDepartamentos()
+        {
+            var lista = DepartamentoCN.ListarDepartamentos();
+            return Json(new { data=lista},JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Editar(int id)
         {
             var dpto = DepartamentoCN.GetDepartamento(id);

@@ -21,6 +21,7 @@ namespace Datos
         {
             using (var db = new BD_ProyectoEntities())
             {
+                db.Configuration.LazyLoadingEnabled = false;
                 return db.Departamento.ToList();
             }
         }
