@@ -20,3 +20,21 @@ function validarFechas(fechaIni, fechaFin) {
     else
         return true;
 }
+/* se pone myCallback para que termine la funcion y se pueda hacer la siguiente instruccion ,dar tiempo para la siguiente instruccion */
+function getDepartamento(myCallback) {
+        $.ajax({
+            type: "Get",
+            url: "/Departamento/GetDepartamentos",
+            dataType: "json",
+            success: function (result) {
+                $.each(result.data, function (key, item) {
+                    $("#IdDepartamento").append('<option value=' + item.IdDepartamento + '>' + item.NombreDepartamento + '</option>');
+                });
+                return myCallback(result.data)
+            },
+            error: function (data) {
+                alert('error');
+            }
+        });
+    }
+

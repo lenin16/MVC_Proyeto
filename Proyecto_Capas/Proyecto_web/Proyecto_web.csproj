@@ -436,6 +436,8 @@
     <Content Include="Views\Proyecto\Editar.cshtml" />
     <Content Include="Views\Empleado\Inicio.cshtml" />
     <Content Include="Views\Empleado\Crear.cshtml" />
+    <Content Include="Views\Empleado\Detalles.cshtml" />
+    <Content Include="Views\Empleado\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

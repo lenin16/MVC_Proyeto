@@ -46,6 +46,7 @@
     <Compile Include="Empleado.cs">
       <DependentUpon>Model_Proyecto.tt</DependentUpon>
     </Compile>
+    <Compile Include="EmpleadoCE.cs" />
     <Compile Include="Model_Proyecto.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

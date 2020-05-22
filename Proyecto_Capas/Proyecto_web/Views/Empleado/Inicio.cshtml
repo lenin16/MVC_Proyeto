@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entidad.Empleado>
+﻿@model IEnumerable<Entidad.EmpleadoCE>
 
 @{
     ViewBag.Title = "Inicio";
@@ -15,11 +15,9 @@
         @*<th>
             @Html.DisplayNameFor(model => model.IdEmpleado)
         </th>*@
+        
         <th>
-            Nombres
-        </th>
-        <th>
-            Apellidos
+            Apellidos y Nombres
         </th>
         <th>
             Email
@@ -42,11 +40,9 @@
             @item.IdEmpleado
         </td>*@
         <td>
-            @item.Nombres
+            @item.NombreCompleto
         </td>
-        <td>
-            @item.Apellidos
-        </td>
+        
         <td>
             @item.Email
         </td>
@@ -57,7 +53,7 @@
             @item.Celular
         </td>
         <td>
-            @item.IdDepartamento
+            @item.NombreDepartamento
         </td>
         <td>
 

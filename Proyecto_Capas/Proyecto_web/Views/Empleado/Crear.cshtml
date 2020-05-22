@@ -96,23 +96,7 @@
     @Scripts.Render("~/bundles/jqueryval")
 
 <script>
-    getData();
-    function getData() {
-        $.ajax({
-            type: "Get",
-            url: "/Departamento/GetDepartamentos",
-            dataType: "json",
-            success: function (result) {
-                $.each(result.data, function (key, item) {
-                    $("#IdDepartamento").append('<option value=' + item.IdDepartamento + '>' + item.NombreDepartamento + '</option>');
-                });
-            },
-            error: function (data) {
-                alert('error');
-            }
-        });
-    }
-
+    getDepartamento();    
     $("#frmEmpleado").submit(function (event) {
             event.preventDefault(); //para que no reinicialice
 
