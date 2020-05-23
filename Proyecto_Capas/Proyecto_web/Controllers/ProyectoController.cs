@@ -131,5 +131,20 @@ namespace Proyecto_web.Controllers
                 return Json(new { ok = false, msg = ep.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public ActionResult Eliminar_asignacion(int idproyecto, int idempleado)
+        {
+            try
+            {
+                ProyectoCN.Eliminar_asignacion(idproyecto, idempleado);
+                return Json(new { ok = true, toRedirect = Url.Action("AsignarProyecto") }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ep)
+            {
+
+                return Json(new { ok = false, msg = ep.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

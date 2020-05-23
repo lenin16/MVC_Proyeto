@@ -21,6 +21,11 @@ namespace Negocio
             return obj.ListarProyecto();
         }
 
+        public List<sp_ListarProyecto_Result> ListarProyectoCP()
+        {
+            return obj.ListarProyectoCP();
+        }
+
         public static Proyecto obtenerProyecto(int id)
         {
             return obj.obtenerProyecto(id);
@@ -49,6 +54,11 @@ namespace Negocio
         public static void AsignarProyecto(int idproyecto, int idempleado)
         {
             obj.AsignarProyecto(idproyecto, idempleado);
+        }
+
+        public static void Eliminar_asignacion(int idproyecto, int idempleado)
+        {
+            obj.Eliminar_asignacion(idproyecto, idempleado);
         }
 
         public static List<ProyectoEmpleadoCE> ListarAsignaciones()

@@ -1,6 +1,7 @@
 ﻿using Entidad;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,14 +30,34 @@ namespace Datos
             }
         }
 
+        public List<sp_ListarProyecto_Result> ListarProyectoCP()
+        {
+            using (var db = new BD_ProyectoEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                var data = db.sp_ListarProyecto().ToList();
+                return data;
+            }
+        }
+
         public Proyecto obtenerProyecto(int id)
         {
-            using (var db =new BD_ProyectoEntities())
+            using (var db = new BD_ProyectoEntities())
             {
                 //return db.Proyecto.Where(p => p.IdProyecto == id).FirstOrDefault();
                 return db.Proyecto.Find(id);
             }
         }
+        
+       /* public Proyecto obtenerProyecto(int id)
+        {
+            using (var db = new BD_ProyectoEntities())
+            {
+                var miProyecto = db.Database.SqlQuery<Proyecto>("sp_obtenerProyecto @IdProyecto",
+                    new SqlParameter("IdProyecto", id)).FirstOrDefault();
+                return miProyecto;
+            }
+        }*/
 
         public void Editar(Proyecto proyecto)
         {
@@ -103,6 +124,16 @@ namespace Datos
             using (var db = new BD_ProyectoEntities())
             {
                 return db.Database.SqlQuery<ProyectoEmpleadoCE>(sql).ToList();
+            }
+        }
+
+        public void Eliminar_asignacion(int idproyecto, int idempleado)
+        {
+            using (var db = new BD_ProyectoEntities())
+            {
+                var data = db.ProyectoEmpleado.Where(e => e.IdProyecto == idproyecto && e.IdEmpleado == idempleado).FirstOrDefault();
+                db.ProyectoEmpleado.Remove(data);
+                db.SaveChanges();
             }
         }
     }

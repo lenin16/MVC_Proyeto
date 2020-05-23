@@ -37,7 +37,7 @@
                     <tr>
                         <th>Proyecto</th>
                         <th>Empleado</th>
-                        <th>Fecha Alta</th>
+                        <th class="text-center">Fecha Alta</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -47,8 +47,8 @@
                         <tr>
                             <td>@item.NombreProyecto</td>
                             <td>@item.NombreCompleto</td>
-                            <td>@item.FechaAlta</td>
-                            <td></td>
+                            <td class="text-center">@item.FechaAlta.ToShortDateString()</td>
+                            <td class="text-center"><a href="javascript:;" onclick="Eliminar_asignacion(@item.IdProyecto,@item.IdEmpleado)" class="btn btn-danger btn-sm" >Delete</a></td>
                         </tr>
                     }
                 </tbody>
@@ -73,6 +73,7 @@
                 alert("Debe seleccionar un proyecto y un empleado");
                 return;
             }
+            /*
             LoadingOverlayShow("#divAsignar");
             $.ajax({
                 url: "/Proyecto/AsignarProyecto",
@@ -91,7 +92,107 @@
 
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 LoadingOverlayHide("#divAsignar");
-            });
+            });*/
+
+            Swal.fire({
+                title: 'estas seguro de asignar este proyecto?',                
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Asignar proyecto!'
+            }).then((result) => {
+                if (result.value) {                    
+                    //LoadingOverlayShow("#tablaDemo");
+                    $.ajax({
+                        url: "/Proyecto/AsignarProyecto",
+                        type: "post",
+                        data: { idproyecto, idempleado},
+                    }).done(function (response) {
+                        console.log(response);
+                        //LoadingOverlayHide("#tablaDemo");
+                        if (response.ok == true) {                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Asignacion creada correctamente',                                
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location = response.toRedirect;
+                                }
+                            });                            
+                        }
+                        else {
+                            alert(response.msg);
+                        }               
+                
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        //LoadingOverlayHide("#tablaDemo");
+                        
+                    });                                 
+                }
+            })
+        }
+
+        function Eliminar_asignacion(idproyecto,idempleado) {
+           /* LoadingOverlayShow("#divAsignar");
+            $.ajax({
+                url: "/Proyecto/Eliminar_asignacion",
+                type: "post",
+                data: { idproyecto, idempleado },
+            }).done(function (response) {
+                console.log(response);
+                LoadingOverlayHide("#divAsignar");
+                if (response.ok == true) {
+                    alert("Asignacion eliminada correctamente");
+                    window.location = response.toRedirect;
+                }
+                else {
+                    alert(response.msg);
+                }
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                LoadingOverlayHide("#divAsignar");
+            });*/
+
+            Swal.fire({
+                title: 'estas seguro de Eliminar este proyecto?',                
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Eliminar proyecto!'
+            }).then((result) => {
+                if (result.value) {                    
+                    //LoadingOverlayShow("#tablaDemo");
+                    $.ajax({
+                        url: "/Proyecto/Eliminar_asignacion",
+                        type: "post",
+                        data: { idproyecto, idempleado},
+                    }).done(function (response) {
+                        console.log(response);
+                        //LoadingOverlayHide("#tablaDemo");
+                        if (response.ok == true) {                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Asignacion eliminada correctamente',                                
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location = response.toRedirect;
+                                }
+                            });                            
+                        }
+                        else {
+                            alert(response.msg);
+                        }               
+                
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        //LoadingOverlayHide("#tablaDemo");
+                        
+                    });                                 
+                }
+            })
         }
 
     </script>
