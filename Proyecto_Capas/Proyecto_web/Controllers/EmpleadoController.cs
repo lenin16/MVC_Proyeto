@@ -90,5 +90,19 @@ namespace Proyecto_web.Controllers
                 return Json(new { ok = false, msg = ep.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult ListarEmpleados()
+        {
+            try
+            {
+                var lista = EmpleadoCN.ListarEmpleado();
+                return Json(new { data=lista},JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ep)
+            {
+
+                return Json(new { ok = false, msg = ep.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

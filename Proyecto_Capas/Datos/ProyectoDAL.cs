@@ -22,6 +22,9 @@ namespace Datos
         {
             using (var db = new BD_ProyectoEntities())
             {
+                db.Configuration.LazyLoadingEnabled = false;
+                //var toDay = DateTime.Now.Date;
+                //return db.Proyecto.Where(p=>p.FechaFin> toDay).ToList();
                 return db.Proyecto.ToList();
             }
         }
@@ -56,5 +59,59 @@ namespace Datos
                 db.SaveChanges();
             }
         }
+
+        public bool ExisteAsignacion(int idproyecto, int idempleado)
+        {
+            using (var db = new BD_ProyectoEntities())
+            {
+                var existeAsignacion = db.ProyectoEmpleado.Any(p=>p.IdProyecto== idproyecto && p.IdEmpleado== idempleado);  // determina si contiene elementos y devuelve true si tiene y no sino tiene elementos
+                return existeAsignacion;
+            }
+        }
+
+        public bool EsProyectoActivo(int idproyecto)
+        {
+            using (var db = new BD_ProyectoEntities())
+            {
+                var toDay = DateTime.Now.Date;
+                var proyectoActive = db.Proyecto.Any(p => p.IdProyecto == idproyecto && p.FechaFin > toDay);  // determina si contiene elementos y devuelve true si tiene y no sino tiene elementos
+                return proyectoActive;
+            }
+        }
+        public void AsignarProyecto(int idproyecto, int idempleado)
+        {
+            var proyectoEmp = new ProyectoEmpleado
+            {
+                IdProyecto = idproyecto,
+                IdEmpleado = idempleado,
+                FechaAlta = DateTime.Now
+            };
+
+            using (var db = new BD_ProyectoEntities())
+            {
+                db.ProyectoEmpleado.Add(proyectoEmp);
+                db.SaveChanges();
+            }
+        }
+
+        public List<ProyectoEmpleadoCE> ListarAsignaciones()
+        {
+            string sql = @"select pe.IdProyecto,p.NombreProyecto, pe.IdEmpleado,e.Apellidos,e.Nombres, pe.FechaAlta
+                            from ProyectoEmpleado pe inner join Proyecto p
+                            on pe.IdProyecto=p.IdProyecto inner join Empleado e
+                            on pe.IdEmpleado=e.IdEmpleado";
+            using (var db = new BD_ProyectoEntities())
+            {
+                return db.Database.SqlQuery<ProyectoEmpleadoCE>(sql).ToList();
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+

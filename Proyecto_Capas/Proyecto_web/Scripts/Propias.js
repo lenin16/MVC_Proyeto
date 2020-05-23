@@ -30,11 +30,50 @@ function getDepartamento(myCallback) {
                 $.each(result.data, function (key, item) {
                     $("#IdDepartamento").append('<option value=' + item.IdDepartamento + '>' + item.NombreDepartamento + '</option>');
                 });
-                return myCallback(result.data)
+                if (myCallback != undefined)
+                    return myCallback(result.data);
             },
             error: function (data) {
                 alert('error');
             }
         });
-    }
+}
+
+function Listar_Proyecto(myCallback) {
+    $.ajax({
+        type: "Get",
+        url: "/Proyecto/ListarProyecto",
+        dataType: "json",
+        success: function (result) {
+            $.each(result.data, function (key, item) {
+                $("#IdProyecto").append('<option value=' + item.IdProyecto + '>' + item.NombreProyecto + '</option>');
+            });
+
+            if (myCallback != undefined)
+                return myCallback(result.data);
+        },
+        error: function (data) {
+            alert('error');
+        }
+    });
+}
+
+function Listar_Empleado(myCallback) {
+    $.ajax({
+        type: "Get",
+        url: "/Empleado/ListarEmpleados",
+        dataType: "json",
+        success: function (result) {
+            $.each(result.data, function (key, item) {
+                $("#IdEmpleado").append('<option value=' + item.IdEmpleado + '>' + item.Apellidos + ' ' + item.Nombres+ '</option>');
+            });
+
+            if (myCallback != undefined)
+                return myCallback(result.data);
+        },
+        error: function (data) {
+            alert('error');
+        }
+    });
+}
 

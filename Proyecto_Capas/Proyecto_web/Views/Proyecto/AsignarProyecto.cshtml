@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Entidad.ProyectoEmpleadoCE>
+@{
+    ViewBag.Title = "Asignar Proyecto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asignar Proyecto</h2>
+<hr />
+<div id="divAsignar">
+    <div class="form-group row">
+        <label class="col-sm-1 col-form-label col-form-label-sm">Proyecto</label>
+        <div class="col-sm-3">
+            <select class="form-control form-control-sm" id="IdProyecto" name="IdProyecto">
+                <option value="">Seleccione </option>
+            </select>
+        </div>
+
+        <label class="col-sm-1 col-form-label col-form-label-sm">Empleado</label>
+        <div class="col-sm-3">
+            <select class="form-control form-control-sm" id="IdEmpleado" name="IdEmpleado">
+                <option value="">Seleccione </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="offset-3 col-md-6">
+            <br />
+            <button class="btn btn-primary btn-block" type="button" onclick="Asignar_Proyecto()">Asignar</button>
+        </div>        
+    </div>
+    <hr />
+    <div class="form-group">
+        <div class="offset-2 col-md-8">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Proyecto</th>
+                        <th>Empleado</th>
+                        <th>Fecha Alta</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.NombreProyecto</td>
+                            <td>@item.NombreCompleto</td>
+                            <td>@item.FechaAlta</td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+       
+</div>
+@section scripts{
+
+    <script>
+        Listar_Proyecto();
+        Listar_Empleado();
+
+        function Asignar_Proyecto()
+        {
+            var idproyecto = $("#IdProyecto").val();
+            var idempleado = $("#IdEmpleado").val();
+
+            if (idproyecto == "" || idempleado == "")
+            {
+                alert("Debe seleccionar un proyecto y un empleado");
+                return;
+            }
+            LoadingOverlayShow("#divAsignar");
+            $.ajax({
+                url: "/Proyecto/AsignarProyecto",
+                type: "post",
+                data: { idproyecto, idempleado },
+            }).done(function (response) {
+                console.log(response);
+                LoadingOverlayHide("#divAsignar");
+                if (response.ok == true) {
+                    alert("Asignacion creada correctamente");
+                    window.location = response.toRedirect;
+                }
+                else {
+                    alert(response.msg);
+                }
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                LoadingOverlayHide("#divAsignar");
+            });
+        }
+
+    </script>
+    }

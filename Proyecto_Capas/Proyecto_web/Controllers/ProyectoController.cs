@@ -91,5 +91,45 @@ namespace Proyecto_web.Controllers
                 return Json(new { ok = false, msg = ep.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult ListarProyecto()
+        {
+            try
+            {
+                var lista = ProyectoCN.ListarProyecto();
+                return Json(new { data=lista},JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ep)
+            {
+
+                return Json(new { ok = false, msg = ep.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult AsignarProyecto()
+        {
+            return View(ProyectoCN.ListarAsignaciones());
+        }
+
+        [HttpPost]
+        public ActionResult AsignarProyecto(int idproyecto, int idempleado)
+        {
+            try
+            {
+                if (ProyectoCN.ExisteAsignacion(idproyecto, idempleado))
+                    return Json(new { ok=false,msg="ya exite este proyecto con este empleado"});
+
+                if(!ProyectoCN.EsProyectoActivo(idproyecto))
+                    return Json(new { ok = false, msg = "El proyecto ya no se encuentra activo" });
+
+                ProyectoCN.AsignarProyecto(idproyecto, idempleado);
+                return Json(new { ok = true, toRedirect=Url.Action("AsignarProyecto") }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ep)
+            {
+
+                return Json(new { ok = false, msg = ep.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
