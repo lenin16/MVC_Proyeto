@@ -1,7 +1,10 @@
-﻿using Entidad;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
+using Entidad;
 using Negocio;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -102,6 +105,98 @@ namespace Proyecto_web.Controllers
             {
 
                 return Json(new { ok = false, msg = ep.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult RptEmpleado()
+        {
+            return View();
+        }
+
+        /*
+         sin parametro 
+        public ActionResult DescargarReporte_empleado()
+        {            
+            try
+            {
+                var rptH = new ReportClass();
+                rptH.FileName = Server.MapPath("/Reportes/EmpleadoReporte.rpt");
+                rptH.Load();
+
+                // Report connection
+                var conInfo = CrystalReportCn.GetConnectionInfo();
+                TableLogOnInfo logonInfo = new TableLogOnInfo();
+                Tables tables;
+                tables = rptH.Database.Tables;
+                foreach (Table table in tables)
+                {
+                    logonInfo = table.LogOnInfo;
+                    logonInfo.ConnectionInfo = conInfo;
+                    table.ApplyLogOnInfo(logonInfo);
+                }
+
+                Response.Buffer = false;
+                Response.ClearContent();
+                Response.ClearHeaders();
+
+                Stream stream = rptH.ExportToStream(ExportFormatType.PortableDocFormat);
+                rptH.Dispose();
+                rptH.Close();
+                return new FileStreamResult(stream, "application/pdf");
+
+                //Stream stream = rptH.ExportToStream(ExportFormatType.Excel);
+                //stream.Seek(0,SeekOrigin.Begin);
+                //return File(stream, "application/vnd.ms-excel","EmpleadoRpt.xls");
+            }
+            catch (Exception ep)
+            {
+
+                throw;
+            }
+        }  */
+
+
+            //con parametro
+        public ActionResult DescargarReporte_empleado( int Codigo,string algo)
+        {
+            try
+            {
+                var rptH = new ReportClass();
+                rptH.FileName = Server.MapPath("/Reportes/EmpleadoReporte.rpt");
+                rptH.Load();
+
+                rptH.SetParameterValue("IdDpto", Codigo);
+                //rptH.SetParameterValue("Nuevo_Parametro", algo);
+
+                // Report connection
+                var conInfo = CrystalReportCn.GetConnectionInfo();
+                TableLogOnInfo logonInfo = new TableLogOnInfo();
+                Tables tables;
+                tables = rptH.Database.Tables;
+                foreach (Table table in tables)
+                {
+                    logonInfo = table.LogOnInfo;
+                    logonInfo.ConnectionInfo = conInfo;
+                    table.ApplyLogOnInfo(logonInfo);
+                }
+
+                Response.Buffer = false;
+                Response.ClearContent();
+                Response.ClearHeaders();
+
+                Stream stream = rptH.ExportToStream(ExportFormatType.PortableDocFormat);
+                rptH.Dispose();
+                rptH.Close();
+                return new FileStreamResult(stream, "application/pdf");
+
+                //Stream stream = rptH.ExportToStream(ExportFormatType.Excel);
+                //stream.Seek(0,SeekOrigin.Begin);
+                //return File(stream, "application/vnd.ms-excel","EmpleadoRpt.xls");
+            }
+            catch (Exception ep)
+            {
+
+                throw;
             }
         }
     }
